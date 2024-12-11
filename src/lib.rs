@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::fs::read_to_string;
 use std::str::FromStr;
 
@@ -11,23 +12,30 @@ pub fn count_stones(input_path: &str, blinks: usize) -> usize {
 
     let mut stone_count = 0;
     for stone in puzzle.iter() {
-        stone_count += blink_stone_time(*stone, blinks).iter().count();
+        stone_count += blink_stone_time(*stone, blinks);
     }
 
     stone_count
 }
 
-fn blink_stone_time(stone_number: usize, times: usize) -> Vec<usize> {
+fn blink_stone_time(stone_number: usize, times: usize) -> usize {
     let mut current_stones = vec![stone_number];
+    let mut computed_items = HashMap::new();
 
     for _ in 0..times {
         let mut new_stones = Vec::new();
         for &stone in &current_stones {
-            new_stones.extend(blink_stone(stone));
+            if computed_items.contains_key(&stone) {
+                new_stones.extend(computed_items.get(&stone).unwrap());
+            } else {
+                let result = blink_stone(stone);
+                new_stones.extend(&result);
+                computed_items.insert(stone, result);
+            }
         }
         current_stones = new_stones;
     }
-    current_stones
+    current_stones.len()
 }
 
 
