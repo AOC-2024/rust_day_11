@@ -4,4 +4,8 @@ fn main() {
     let stones_after_25_blinks = count_stones("src/resources/puzzle.txt", 25);
 
     println!("Stones after 25 blinks: {}", stones_after_25_blinks);
+
+    let stones_after_75_blinks = count_stones("src/resources/puzzle.txt", 75);
+
+    println!("Stones after 25 blinks: {}", stones_after_75_blinks);
 }
